@@ -7,6 +7,7 @@ window.onload = function() {
     var nickname = document.getElementById("nickname");
     var sendButton = document.getElementById("send");
     var clearButton = document.getElementById("clear");
+    var treeButton = document.getElementById("tree");
     var content = document.getElementById("content");
     var db = document.getElementById("db");
     
@@ -77,6 +78,9 @@ window.onload = function() {
     };
     clearButton.onclick = function() {
     	socket.emit('clear');
+    };
+    treeButton.onclick = function() {
+    	socket.emit('tree');
     };
  
 }

@@ -2,20 +2,17 @@ window.onload = function() {
 	var URL = document.URL;
     var db_list = [];
     var chat_list = [];
-    var socket = io.connect( "http://localhost:3700/chat");
+    
+    var socket = io.connect( URL );
     var field = document.getElementById("field");
     var nickname = document.getElementById("nickname");
     var sendButton = document.getElementById("send");
     var clearButton = document.getElementById("clear");
     var treeButton = document.getElementById("tree");
+    var tstButton = document.getElementById("tst");
     var content = document.getElementById("content");
+    var callbacks = document.getElementById("callbacks");
     var db = document.getElementById("db");
-    
-    
-    
-    
-    
-    
     
     
     
@@ -81,6 +78,14 @@ window.onload = function() {
     };
     treeButton.onclick = function() {
     	socket.emit('tree');
+    };
+    tstButton.onclick = function() {
+    	var text = field.value;
+    	var nn = nickname.value;
+    	socket.emit('tst',
+    			{ message: { text: text, nickname: nn } },
+    			function(data){ callbacks.innerHTML = data.message.nickname + ": " + data.message.text; }
+    	);
     };
  
 }

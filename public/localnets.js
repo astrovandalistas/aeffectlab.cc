@@ -1,8 +1,15 @@
 
 var messages = [
 	{
-		localNetName:"Five42",
-		localNetLocation:{city:"Oakland", state:"CA", country:"USA", coordinates:[37.8044, -122.2697]},
+		localNet: {
+			name:"Five42",
+			location: {
+				city:"Oakland",
+				state:"CA",
+				country:"USA",
+				coordinates:[37.8044, -122.2697]
+			},
+		},
 		dateTime: "yyyy/mm/dd hh:mm:ss",
 		epoch: 1373260515,
 		messageId: 12,
@@ -14,8 +21,15 @@ var messages = [
 
 	},
 	{
-		localNetName:"MOLAA",
-		localNetLocation:{city:"Long Beach", state:"CA", country:"USA", coordinates:[33.7669, -118.1883]},
+		localNet: {
+			name:"MOLAA",
+			location: {
+				city:"Long Beach",
+				state:"CA",
+				country:"USA",
+				coordinates:[33.7669, -118.1883]
+			},
+		},
 		dateTime: "yyyy/mm/dd hh:mm:ss",
 		epoch: 1373220515,
 		messageId: 13,
@@ -27,8 +41,15 @@ var messages = [
 	
 	},
 	{
-		localNetName: "SESC",
-		localNetLocation: {city:"São Paulo", state:"SP", country:"Brazil", coordinates:[-23.5000, -46.6167]},
+		localNet: {
+			name: "SESC",
+			location: {
+				city:"São Paulo",
+				state:"SP",
+				country:"Brazil",
+				coordinates:[-23.5000, -46.6167]
+			},
+		},
 		dateTime: "yyyy/mm/dd hh:mm:ss",
 		epoch: 1373210515,
 		messageId: 14,
@@ -179,16 +200,15 @@ $(document).ready(function(){
 	
 	    		var name = li.html();
 	    		
-	    		console.log(name);
-	    		
 	    		socket.emit("openLocalNet", { name: name }, function(data){    			    			
 	    			lastLocalNet = data.name;    			
 	    			
 	    			var ul = $('<ul>');
 	    			
-	    			var sub_li;
 	    			
 	    			for(var property in data.localNet) {
+	    				
+	    				var sub_li;
 	    				
 	    				sub_li = $('<li>').html( property );
 	    				sub_li.css('color','#fa8');
@@ -253,7 +273,7 @@ $(document).ready(function(){
     			var ul = $('<ul>');
     			var li;
     			for( i in array ) {    				    				
-    				li = $('<li>').html(array[i].localNetName + ": ").css('color','#aaa');
+    				li = $('<li>').html(array[i].localNet.name + ": ").css('color','#aaa');
     				ul.append(li);
 	    			li = $('<li>').html(array[i].messageText + ": ");
 	    			ul.append(li);
@@ -267,8 +287,24 @@ $(document).ready(function(){
     });
     
     addProtButton.click(function() {
-    	var obj = { };    	
-    	socket.emit('addPrototype', obj );    	
+    	var localNet	=	nets[ 0 ];
+    	var prots 		= 	localNet._prots;
+    	var prot 		=	prots[ Math.floor( Math.random() * prots.length ) ];
+    	
+    	var obj = {
+    		localnet: { name: localNet.name },
+    	 	prot: prot
+    	};    	
+    	
+    	socket.emit('addPrototype', obj, function(data){
+    		
+    		allMessagesDiv.html( JSON.stringify( prot ) );
+    	});  
+    	
+    	
+//    	prototypeAddress(address, port)
+//    	callbacks.html(   );
+    	
     });
     
     

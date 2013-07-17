@@ -365,12 +365,13 @@ Handler.prototype.localnets = function(socket) {
 //						} );
 //					});
 			
-			
 
 			socket.on("addMessage", function (data,fn) {
 				
-				console.log("add Message " + data.localNetName );
+				console.log("add Message " + data.localNet.name );
+				
 				db.save("Messages", data, function(err,collection){
+					collection.ensureIndex({"localNet.name" : 1});
 					collection.find().toArray(function(err,array){
 						fn(array);
 					});
@@ -383,18 +384,12 @@ Handler.prototype.localnets = function(socket) {
 			// on prototype addition, send json with:
 			socket.on("addPrototype", function (data,fn) {
 						
-				console.log( "adding" );
-				console.log( data );
-				
-				var response = { 
-//					    		localNetName:	data.localNetName,
-//					    		location:	data.location,  //:{city:Oakland, state:CA, country:USA, coordinates:[37.8044, -122.2697]}
-//					    		prototypeName:	data.prototypeName,  //:text about this localNet, location, project, etc etc
-		    		prototypeAddress:	data.prototypeAddress
-				};
-				
-				fn(response);
-		
+				console.log("addPrototype " + data.localNet.name );
+				db.getCollection("localNets", function(err,collection){					
+					collection.find({ name : data.localNet.name }).toArray(function(err,array){
+						fn(array);
+					});
+				})		
 			});
 		
 		
@@ -452,13 +447,17 @@ Handler.prototype.localnets = function(socket) {
 				
 				db.getCollection("localnets", function(err,collection){
 					if(!err){						
-						collection.findOne({name: name},function(err,result){											
-							db.getCollection("Messages",function(err,collection){
-								collection.find({ localNetName: name }).toArray( function(err,array){																		
-									fn({ localNet: result, messages: array });									
-								});
-							})
-						})
+						collection.findOne({ name: name },
+							function(err,result){											
+								db.getCollection("Messages",function(err,collection){
+									collection.find({ "localNet.name": name }).toArray(
+										function(err,array){																		
+											fn({ localNet: result, messages: array });									
+										}
+									);
+								})
+							}
+						);
 			
 					}
 				})

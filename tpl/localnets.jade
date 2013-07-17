@@ -11,14 +11,23 @@ html
 		h1 LocalNets
 		.controls
 				
-			input#addLocalNet(type='button', value='addLocalNet', style='display:inline-block; width: 90px; padding:5px; margin:5px;  background-color:#ff0')
-			input#addMessage(type='button', value='addMessage', style='display:inline-block; width: 90px; padding:5px; margin:5px; background-color:#50f')
-			input#addProt(type='button', value='addProt', style='display:inline-block; width: 90px; padding:5px; margin:5px; background-color:#0ff')
-			input#removeProt(type='button', value='removeProt', style='display:inline-block; width: 90px; padding:5px; margin:5px; background-color:#f5f')
-			input#disconnect(type='button', value='disconnect', style='display:inline-block; width: 90px; padding:5px; margin:5px; background-color:#5f5')
-			input#clear(type='button', value='clear', style='display:inline-block; width: 90px; padding:5px; margin:5px; background-color:#f00')
-		
-		#localNets(style='width: 200px; height: 500px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
-		#info(style='width: 200px; height: 500px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
-		#messages(style='width: 200px; height: 500px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
+			input#addLocalNet(type='button', value='addLocalNet', style='display:inline-block; width: 140px; padding:5px; margin:5px;  background-color:#ff0')
+			input#addMessage(type='button', value='addMessage', style='display:inline-block; width: 140px; padding:5px; margin:5px; background-color:#50f')
+			input#addProt(type='button', value='addProt', style='display:inline-block; width: 140px; padding:5px; margin:5px; background-color:#0ff')
+			input#removeProt(type='button', value='removeProt', style='display:inline-block; width: 140px; padding:5px; margin:5px; background-color:#f5f')
+			input#disconnect(type='button', value='disconnect', style='display:inline-block; width: 140px; padding:5px; margin:5px; background-color:#5f5')
+			input#clear(type='button', value='clear', style='display:inline-block; width: 140px; padding:5px; margin:5px; background-color:#f00')
+	
+		.viewer(style='display:inline-block')	
+			h4 LocalNets
+			#localNets(style='width: 200px; height: 500px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
+		.viewer(style='display:inline-block')	
+			h4 LocalNet info
+			#info(style='width: 200px; height: 500px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
+		.viewer(style='display:inline-block')	
+			h4 LocalNet messages
+			#messages(style='width: 250px; height: 500px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
+		.viewer(style='display:inline-block')	
+			h4 All messages
+			#allMessages(style='width: 250px; height: 500px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
 		

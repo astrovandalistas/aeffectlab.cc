@@ -10,6 +10,8 @@ window.onload = function() {
     var clearButton = document.getElementById("clear");
     var treeButton = document.getElementById("tree");
     var tstButton = document.getElementById("tst");
+    var saveButton = document.getElementById("save");
+    var showButton = document.getElementById("show");
     var content = document.getElementById("content");
     var callbacks = document.getElementById("callbacks");
     var db = document.getElementById("db");
@@ -18,7 +20,7 @@ window.onload = function() {
     
     
     socket.on('message', function (data) {
-    
+    	
     	if( data.message ) {
     		chat_list.push(
 				data.message.nickname + ": " +
@@ -38,15 +40,18 @@ window.onload = function() {
     });
  
     socket.on('clear_db', function (data) {
+
     	db.innerHTML = ''
     		db_list = []
+    	
     	
     })
     
     socket.on('add_message', function (data) {
-    	
-        if( data.message ) {
-        	var t = new Date(data.created_at)
+
+    	if( data.message ) {
+        
+    		var t = new Date(data.created_at)
         	
         	var timeago = timeDifference( new Date() , t )
         	
@@ -72,6 +77,18 @@ window.onload = function() {
     	var nn = nickname.value;
     	
     	socket.emit('send', { message: { text: text, nickname: nn } } );
+    };
+    showButton.onclick = function() {
+//    	var text = field.value;
+//    	var nn = nickname.value;
+    	
+    	socket.emit('show');
+    };
+    saveButton.onclick = function() {
+    	var text = field.value;
+    	var nn = nickname.value;
+    	
+    	socket.emit('save', { message: { text: text, nickname: nn } } );
     };
     clearButton.onclick = function() {
     	socket.emit('clear');

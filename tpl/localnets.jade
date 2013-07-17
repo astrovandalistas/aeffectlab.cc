@@ -1,0 +1,19 @@
+!!!
+html
+	head
+		title= "LOCALNET"
+		script(src='/localnets.js')
+		script(src='/socket.io/socket.io.js')
+	body
+		h1 LocalNets
+		.controls
+
+				
+			input#addLocalNet(type='button', value='addLocalNet', style='display:inline-block; padding:20px; margin:20px 0;  background-color:#ff0')
+			input#addMessage(type='button', value='addMessage', style='display:inline-block; padding:20px; margin:20px 0; background-color:#50f')
+			input#addProt(type='button', value='addProt', style='display:inline-block; padding:20px; margin:20px 0; background-color:#0ff')
+			input#removeProt(type='button', value='removeProt', style='display:inline-block; padding:20px; margin:20px 0; background-color:#f5f')
+			input#disconnect(type='button', value='disconnect', style='display:inline-block; padding:20px; margin:20px 0; background-color:#5f5')
+		
+		#callbacks(style='width: 500px; height: 100px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll; display:inline-block')		
+		

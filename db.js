@@ -5,29 +5,37 @@ var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
 DB = function(host, port) {
-  this.db= new Db('tst_mssgs', new Server(host, port, {safe: false}, {auto_reconnect: true}, {}));
+  this.db= new Db('tst', new Server(host, port, {safe: false}, {auto_reconnect: true}, {}));
   this.db.open(function(){});
   
 };
 
 
 DB.prototype.getCollection= function(coll_name,callback) {
-  this.db.collection(coll_name, function(error, message_collection) {
+  this.db.collection(coll_name, function(error, collection) {
     if( error ) callback(error);
-    else callback(null, message_collection);
+    else callback(null, collection);
   });
 };
 
 
+DB.prototype.printCollection= function(coll_name,callback) {
+	  this.db.collection(coll_name, function(error, collection) {
+	    if( error ) callback(error);
+	    else collection.count(function(err,cnt){
+	    		console.log(cnt);
+	    })
+	  });
+	};
 
 
 
-//find all messages
+//find all coll_items
 DB.prototype.findAll = function(callback) {
-    this.getCollection('messages',function(error, message_collection) {
+    this.getCollection('coll_items',function(error, collection) {
       if( error ) callback(error)
       else {
-        message_collection.find().toArray(function(error, results) {
+        collection.find().toArray(function(error, results) {
           if( error ) callback(error)
           else callback(null, results)
         });
@@ -35,25 +43,65 @@ DB.prototype.findAll = function(callback) {
     });
 };
 
-//save new message
-DB.prototype.save = function(coll_name, messages, callback) {
-    this.getCollection(coll_name,function(error, message_collection) {
+
+//find all coll_items
+DB.prototype.find = function(coll_name, query, callback) {
+    this.getCollection(coll_name,function(error, collection) {
       if( error ) callback(error)
       else {
-        if( typeof(messages.length)=="undefined")
-          messages = [messages];
-
-        for( var i =0;i< messages.length;i++ ) {
-          message = messages[i];
-          message.created_at = new Date();
-        }
-
-        message_collection.insert(messages, function() {
-          callback(null, messages);
+        collection.find(query).toArray(function(error, results) {
+          if( error )
+        	  callback(error)
+          else
+        	  callback(null, results)
         });
       }
     });
 };
+
+
+
+//save new message
+DB.prototype.save = function(coll_name, coll_items, callback) {
+    this.getCollection(coll_name,function(error, collection) {
+      if( error ) callback(error)
+      else {    	     	  
+    	if( typeof(coll_items.length)=="undefined")
+          coll_items = [coll_items];    	    	
+    	for( var i =0;i< coll_items.length;i++ ) {
+    	  coll_item = coll_items[i];
+    	  coll_item.created_at = new Date();
+        }
+    	console.log("INSERTING");
+    	console.log( coll_items );
+        collection.insert(coll_items, function() {        	
+          callback(null, collection);
+        });
+      }
+    });
+};
+
+
+DB.prototype.clear = function(coll_name, callback) {
+
+	this.getCollection(coll_name,function(error, collection) {
+		if (error)
+			callback(error)
+			else {					
+				collection.remove();
+				console.log( " cleared DB : " + coll_name );
+				callback();
+			}
+	})
+
+}
+
+DB.prototype.clearUsers = function(callback) {
+	
+}
+
+
+
 
 
 

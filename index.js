@@ -15,7 +15,11 @@ app.get("/", function(req, res){
 	res.render("page");
 });
 
-app.get("/2", function(req, res){
+app.get("/localNet", function(req, res){
+    res.render("localnets");
+});
+
+app.get("/chat", function(req, res){
     res.render("page2");
 });
 
@@ -47,6 +51,7 @@ var handler = new Handler(io, Db);
 	
 handler.setup();
 	
+handler.localnets();
 
     
     

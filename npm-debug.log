@@ -1,0 +1,78 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'l',
+1 verbose cli   '-l' ]
+2 info using npm@1.2.32
+3 info using node@v0.10.12
+4 verbose read json /home/furenku/chamba/astrovandalistas/aeffectlab/aeffectlab.cc/package.json
+5 warn package.json RealTimeWebChat@0.0.0 No repository field.
+6 warn package.json RealTimeWebChat@0.0.0 No readme data.
+7 verbose from cache /home/furenku/chamba/astrovandalistas/aeffectlab/aeffectlab.cc/package.json
+8 verbose readDependencies using package.json deps
+9 verbose cache add [ 'l', null ]
+10 verbose cache add name=undefined spec="l" args=["l",null]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: 'l',
+11 verbose parsed url   path: 'l',
+11 verbose parsed url   href: 'l' }
+12 silly lockFile 07c342be-l l
+13 verbose lock l /home/furenku/.npm/07c342be-l.lock
+14 silly lockFile 07c342be-l l
+15 silly lockFile 07c342be-l l
+16 verbose addNamed [ 'l', '' ]
+17 verbose addNamed [ null, '' ]
+18 silly lockFile be311cf5-l l@
+19 verbose lock l@ /home/furenku/.npm/be311cf5-l.lock
+20 silly addNameRange { name: 'l', range: '', hasData: false }
+21 verbose url raw l
+22 verbose url resolving [ 'https://registry.npmjs.org/', './l' ]
+23 verbose url resolved https://registry.npmjs.org/l
+24 info trying registry request attempt 1 at 17:07:59
+25 http GET https://registry.npmjs.org/l
+26 http 200 https://registry.npmjs.org/l
+27 silly registry.get cb [ 200,
+27 silly registry.get   { vary: 'Accept',
+27 silly registry.get     server: 'CouchDB/1.3.0 (Erlang OTP/R15B03)',
+27 silly registry.get     etag: '"D4PL89HYH0366BNKFL2T8BV5"',
+27 silly registry.get     date: 'Tue, 16 Jul 2013 22:08:00 GMT',
+27 silly registry.get     'content-type': 'application/json',
+27 silly registry.get     'content-length': '3409' } ]
+28 silly addNameRange number 2 { name: 'l', range: '', hasData: true }
+29 silly addNameRange versions [ 'l', [ '0.0.1' ] ]
+30 verbose addNamed [ 'l', '0.0.1' ]
+31 verbose addNamed [ '0.0.1', '0.0.1' ]
+32 silly lockFile 8197bea1-l-0-0-1 l@0.0.1
+33 verbose lock l@0.0.1 /home/furenku/.npm/8197bea1-l-0-0-1.lock
+34 silly lockFile 82be5d14-registry-npmjs-org-l-l-0-0-1-tgz https://registry.npmjs.org/l/-/l-0.0.1.tgz
+35 verbose lock https://registry.npmjs.org/l/-/l-0.0.1.tgz /home/furenku/.npm/82be5d14-registry-npmjs-org-l-l-0-0-1-tgz.lock
+36 verbose addRemoteTarball [ 'https://registry.npmjs.org/l/-/l-0.0.1.tgz',
+36 verbose addRemoteTarball   '18dd6a4db10059ab08863fbdf0390dd2dfb73196' ]
+37 silly lockFile 82be5d14-registry-npmjs-org-l-l-0-0-1-tgz https://registry.npmjs.org/l/-/l-0.0.1.tgz
+38 silly lockFile 82be5d14-registry-npmjs-org-l-l-0-0-1-tgz https://registry.npmjs.org/l/-/l-0.0.1.tgz
+39 silly lockFile 8197bea1-l-0-0-1 l@0.0.1
+40 silly lockFile 8197bea1-l-0-0-1 l@0.0.1
+41 silly lockFile be311cf5-l l@
+42 silly lockFile be311cf5-l l@
+43 error Error: EACCES, mkdir '/home/furenku/tmp/npm-7261'
+43 error  { [Error: EACCES, mkdir '/home/furenku/tmp/npm-7261'] errno: 3, code: 'EACCES', path: '/home/furenku/tmp/npm-7261' }
+44 error Please try running this command again as root/Administrator.
+45 error System Linux 3.2.0-23-generic-pae
+46 error command "/usr/local/bin/node" "/usr/local/bin/npm" "install" "l" "-l"
+47 error cwd /home/furenku/chamba/astrovandalistas/aeffectlab/aeffectlab.cc
+48 error node -v v0.10.12
+49 error npm -v 1.2.32
+50 error path /home/furenku/tmp/npm-7261
+51 error code EACCES
+52 error errno 3
+53 error stack Error: EACCES, mkdir '/home/furenku/tmp/npm-7261'
+54 verbose exit [ 3, true ]

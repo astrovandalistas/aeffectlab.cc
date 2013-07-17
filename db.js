@@ -23,7 +23,7 @@ DB.prototype.printCollection= function(coll_name,callback) {
 	  this.db.collection(coll_name, function(error, collection) {
 	    if( error ) callback(error);
 	    else collection.count(function(err,cnt){
-	    		console.log(cnt);
+	    	console.log(cnt);
 	    })
 	  });
 	};
@@ -72,9 +72,10 @@ DB.prototype.save = function(coll_name, coll_items, callback) {
     	  coll_item = coll_items[i];
     	  coll_item.created_at = new Date();
         }
+    	
     	console.log("INSERTING");
-    	console.log( coll_items );
-        collection.insert(coll_items, function() {        	
+    	
+    	collection.insert(coll_items, function() {        	
           callback(null, collection);
         });
       }

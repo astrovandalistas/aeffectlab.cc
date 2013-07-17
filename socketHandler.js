@@ -317,10 +317,8 @@ Handler.prototype.localnets = function(socket) {
 					
 					socket.on("addLocalNet", function (data, fn) {
 				
-						console.log("ADD LocalNet" + data.localNetName );
-				
-						console.log( data );
-						
+						console.log("add LocalNet" + data.localNetName );
+
 						epoch = (new Date()).getTime();
 					
 						obj = {
@@ -340,20 +338,15 @@ Handler.prototype.localnets = function(socket) {
 						
 						db.save("localnets", obj, function(err,collection){
 							collection.find().toArray(function(err,array){
-								for( i in array )
-									console.log( array[i] );
+//								for( i in array )
+//									console.log( array[i] );
 							});
 						})
 						
 						
 				    	var response = { 
 				    		epoch: epoch,
-				    		
-				    		
-//					    		localNetName:	data.localNetName, 
-//					    		location:	data.location,  //:{city:Oakland, state:CA, country:USA, coordinates:[37.8044, -122.2697]}
-//					    		localNetDescription:	data.localNetDescription,  //:text about this localNet, location, project, etc etc
-//					    		receivers:	data.receivers //:[twitter,sms,http]
+				    		localnet: obj
 						};
 				
 						fn(response)
@@ -411,6 +404,17 @@ Handler.prototype.localnets = function(socket) {
 				
 					// on unpublished messages, send json with:
 				
+					socket.on("clear", function (data,fn) {
+						
+						db.getCollection("localnets",function(err,collection){
+							collection.remove();
+							fn();
+						})
+						
+						
+					});
+					
+					
 					socket.on("addMessage", function (data,fn) {
 							
 						console.log( data );
@@ -439,6 +443,41 @@ Handler.prototype.localnets = function(socket) {
 					});
 
 
+					
+					
+					
+/*
+ * 
+ * 		GUI TESTING FUNCTIONS:
+ * 
+ */					
+					
+
+
+socket.on("openLocalNet", function (data,fn) {
+		
+	var name = data.name;
+	
+	console.log( "openLocalNet" + name );
+	
+	db.getCollection("localnets", function(err,collection){
+		if(!err){
+			
+			collection.findOne({name: name},function(err,result){				
+				fn(result)
+			})
+
+		}
+	})
+	
+
+});
+
+					
+					
+					
+					
+					
 		  });
 
 

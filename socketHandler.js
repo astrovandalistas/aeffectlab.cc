@@ -4,8 +4,8 @@
     
 
 var io, db, self;
-var localnets;
-
+var localNets;
+var localNetNames = [];
 
 Handler = function(_io, _db) {
 
@@ -92,6 +92,7 @@ Handler.prototype.setup = function(socket) {
 	var chat = io
 	  .of('/chat')
 	  .on('connection', function (socket) {
+		  
 		  console.log("connect to chat 2");
 		  
 		  
@@ -305,19 +306,31 @@ Handler.prototype.setup = function(socket) {
 
 
 
-Handler.prototype.localnets = function(socket) {	
+Handler.prototype.localNets = function(socket) {	
 	
 
-	localnets = io
+	localNets = io
 		.of('/localNet')
 		.on('connection', function(socket){
 			console.log("localnet connected");
-
-					 
+	
+			var printLocalNets = function() {
+				db.getCollection("localNets", function(err,collection){
+					if(!err)						
+						collection.find().toArray(
+								function(err,array){																		
+									socket.emit("showLocalNets", array );									
+								});															
+				});
+			};
+			
+			printLocalNets();
 					
-		socket.on("addLocalNet", function (data, fn) {
-		
-				console.log("add LocalNet " + data.localNetName );
+			socket.on("addLocalNet", function (data, fn) {
+			
+				localNetNames[ socket.id ] = data.name;
+
+				console.log("add LocalNet " + data.name );
 
 				epoch = (new Date()).getTime();
 			
@@ -329,41 +342,79 @@ Handler.prototype.localnets = function(socket) {
 					image: data.image,
 					active : data.active,
 					rcvrs : data.rcvrs,
+					prots : [],
 					hashtags : data.hashtags, 
 					epoch: epoch
 					
 				}
 
-				localNets[ data.name ] = socket.id;
+				localNetNames[ data.name ] = socket.id;
 				
-				db.save("localnets", obj, function(err,collection){
-					collection.find().toArray(function(err,array){
-//								for( i in array )
-//									console.log( array[i] );
-					});
-				})
-				
-				
-		    	var response = { 
-		    		epoch: epoch,
-		    		localnet: obj
-				};
-		
-				fn(response)
-		
+				db.saveLocalNet(obj, function(err,collection){
+					if(!err)
+						printLocalNets();
+				});
+
+//				fn({});
+//				
+//		    	var response = { 
+//		    		epoch: epoch,
+//		    		localnet: obj
+//				};
+//		
+//				fn(response)
+//		
 				
 			});
 			
 			
 			 
 			
-//					socket.on("disconnect", function (data, fn) {
-//						collection.findAndModify( {
-//							query: { name: "Tom", state: "active", rating: { $gt: 10 } },
-//							sort: { rating: 1 },
-//							update: { $inc: { score: 1 } }
-//						} );
-//					});
+		socket.on( "disconnect", function () {
+
+			var name = localNetNames[socket.id];
+			
+//			console.log( "disconnect " + data.localNet.name );
+//			
+//			db.getCollection('localNets', function(err,collection) {
+//				collection.findAndModify(
+//						{ name : data.localNet.name }
+//						, [], { active: false }, {}	,
+//						function(err,result){
+//							if(!err)
+//								fn(result);
+//						}
+//				);							
+//			});
+		});
+		
+	
+		socket.on( "Disconnect", function (data, fn) {
+			console.log( "disconnect " + data.localNet.name );
+			console.log(data);
+			data.active = false;
+			db.getCollection('localNets', function(err,collection) {
+				collection.update(
+				{ name : data.localNet.name },
+				{  $set: { active: false } }, 
+				{
+					new: 1
+				},
+				function(err,numAffected){							
+					collection.find().toArray( function(err,array) {
+						fn(array);
+					});
+				});
+				
+//				collection.findOne().toArray(
+//					function(err,array){
+//						console.log(array);
+//						if(!err)
+//							fn(array);
+//					}
+//				);							
+			});
+		});
 			
 
 			socket.on("addMessage", function (data,fn) {
@@ -381,39 +432,51 @@ Handler.prototype.localnets = function(socket) {
 			});
 
 			
-			// on prototype addition, send json with:
 			socket.on("addPrototype", function (data,fn) {
+				console.log("addPrototype " + data.localNet.name );				
+				db.getCollection("localNets", function(err,collection){									
+					collection.findAndModify(
+						{ name : data.localNet.name }
+						, [], { $addToSet: { prots: data.prot } },{ new: 1 },
 						
-				console.log("addPrototype " + data.localNet.name );
-				db.getCollection("localNets", function(err,collection){					
-					collection.find({ name : data.localNet.name }).toArray(function(err,array){
-						fn(array);
-					});
+						function(err,result){
+							if(!err)
+								fn(result);										
+						}
+					);									
 				})		
 			});
 		
 		
 			
 		
-			// on prototype deletion, send json with:
-			
-
 			socket.on("removePrototype", function (data,fn) {
-				console.log( "REMOVEing" );
+				console.log( "removePrototype " + data.localNet.name );				
+				db.getCollection("localNets", function(err,collection){									
+					collection.findAndModify(
+						{ name : data.localNet.name }
+						, [], { $pull: { prots: data.prot } }, {},
+						
+						function(err,result){
+							if(!err)
+								fn(result);										
+						}
+					);								
+				})		
 
-				console.log( data );
 				var response = {			
 		    		prototypeAddress:	data.prototypeAddress
 				};
 				fn(response);
-		
 			});
 		
-			// on unpublished messages, send json with:
 		
+			
+
+
 			socket.on("clear", function (data,fn) {
 				console.log("clear");
-				db.getCollection("localnets",function(err,collection){
+				db.getCollection("localNets",function(err,collection){
 					collection.remove();
 					fn();
 				})
@@ -439,30 +502,29 @@ Handler.prototype.localnets = function(socket) {
 					
 	
 			
-			socket.on("openLocalNet", function (data,fn) {
-					
-				var name = data.name;
-				
-				console.log( "openLocalNet" + name );
-				
-				db.getCollection("localnets", function(err,collection){
+
+			
+			
+			
+			socket.on("openLocalNet", function (data,fn) {					
+				var name = data.name;				
+				console.log( "openLocalNet" + name );				
+				db.getCollection("localNets", function(err,collection){
 					if(!err){						
 						collection.findOne({ name: name },
-							function(err,result){											
-								db.getCollection("Messages",function(err,collection){
-									collection.find({ "localNet.name": name }).toArray(
+							function(err,result){				
+								
+								db.getCollection("Messages",function(err,messages){
+									messages.find({ "localNet.name": name }).toArray(
 										function(err,array){																		
 											fn({ localNet: result, messages: array });									
 										}
 									);
 								})
 							}
-						);
-			
+						);			
 					}
 				})
-				
-			
 			});
 			
 								

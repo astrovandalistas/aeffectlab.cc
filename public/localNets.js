@@ -72,22 +72,22 @@ rcvrs: [{name:"sms"},
 {name:"twitter"},
 {name:"freenet"},
 {name:"http"}],
-_prots: [{name: "AST",
+_prots: [{name: "AST1",
 address: ["192.168.23.12",4555],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-     {name: "CAU",
+     {name: "CAU1",
      address: ["192.168.23.15",4555],
      description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-{name: "ISO",
+{name: "ISO1",
 address: ["192.168.23.18",4555],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-{name: "VLE",
+{name: "VLE1",
 address: ["192.168.23.20",4555],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
@@ -107,12 +107,12 @@ address: ["192.168.2.2",4555],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-{name: "AST",
+{name: "AST2",
 address: ["192.168.2.2",4444],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-{name: "ISO",
+{name: "ISO2",
 address: ["192.168.2.2",4599],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
@@ -132,22 +132,22 @@ address: ["localhost",9000],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-{name: "AST",
+{name: "AST3",
 address: ["192.168.2.2",4555],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-     {name: "CAU",
+     {name: "CAU3",
      address: ["192.168.2.20",4556],
      description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-{name: "ISO",
+{name: "ISO3",
 address: ["192.168.2.30",4588],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true},
-{name: "VLE",
+{name: "VLE3",
 address: ["192.168.2.2",4556],
 description: "ohh lalalala",
 image: "http://i.imgur.com/OV5JNjB.jpg",
@@ -180,6 +180,7 @@ $(document).ready(function(){
     var localNetDiv = $("#localNets");
     var messagesDiv = $("#messages");
     var allMessagesDiv = $("#allMessages");
+    var callbacks = $("#callbacks");
     
     var db = $("#db");
 
@@ -187,7 +188,6 @@ $(document).ready(function(){
     var localNets;
 
     var lastLocalNet;    
-    
     
     var updateClicks = function( ) {
     	var lis = localNetDiv.find('li');
@@ -238,13 +238,35 @@ $(document).ready(function(){
 	};
     
     
+	
+	var printLocalNets = function(data){
+		var ul = $("<ul>");
+		
+		for ( i in data ) {    				
+			var li = $('<li>');
+			li.html( data[i].name );
+			if(data[i].active)
+				li.addClass("active");
+			ul.append( li );
+		}
+		localNetDiv.html(ul);
+		updateClicks();
+	};
+	
 
     
     
-    socket.on('clear_db', function (data) {
-    	db.html("")        
+	socket.on('clear_db', function (data) {
+		db.html("");    
+	})
+
+	socket.on('showLocalNets', function (data) {
+    	printLocalNets(data);
     })
 
+    var callback = function(data){    	
+    	callbacks.html( JSON.stringify( data ) );
+    }
 
     addLocalNetButton.click(function() {
     	var obj = nets[ Math.floor(Math.random() * nets.length) ];
@@ -252,13 +274,7 @@ $(document).ready(function(){
     	socket.emit(
     		'addLocalNet'
     		, obj
-    		, function(data){
-    			var li = $('<li>');
-    			li.html( data.localnet.name );
-    			localNetDiv.append( li );
-//    			infoDiv.html( JSON.stringify( data ) );
-    			updateClicks();
-    		}
+    		, printLocalNets
     	);    	
     });
     
@@ -287,21 +303,19 @@ $(document).ready(function(){
     });
     
     addProtButton.click(function() {
-    	var localNet	=	nets[ 0 ];
-    	var prots 		= 	localNet._prots;
-    	var prot 		=	prots[ Math.floor( Math.random() * prots.length ) ];
     	
+    	var localNet	=	nets[ Math.floor( Math.random() * nets.length ) ];
+    	
+    	var prots 		= 	nets[ Math.floor( Math.random() * nets.length ) ]._prots;
+    	var prot 		=	prots[ Math.floor( Math.random() * prots.length ) ];
     	var obj = {
-    		localnet: { name: localNet.name },
+    		localNet: { name: localNet.name },
     	 	prot: prot
     	};    	
     	
-    	socket.emit('addPrototype', obj, function(data){
-    		
-    		allMessagesDiv.html( JSON.stringify( prot ) );
-    	});  
+    	socket.emit('addPrototype', obj, callback);  
     	
-    	
+//    	callback:
 //    	prototypeAddress(address, port)
 //    	callbacks.html(   );
     	
@@ -309,27 +323,61 @@ $(document).ready(function(){
     
     
     removeProtButton.click(function() {
-    	var obj = { };    	
-    	socket.emit('removePrototype', obj );    	
+    	
+    	var localNet	=	nets[ Math.floor( Math.random() * nets.length ) ];
+    	
+    	var prots 		= 	nets[ Math.floor( Math.random() * nets.length ) ]._prots;
+    	var prot 		=	prots[ Math.floor( Math.random() * prots.length ) ];
+    	var obj = {
+    		localNet: { name: localNet.name },
+    	 	prot: prot
+    	};    	
+    	
+    	socket.emit('removePrototype', obj, callback);  
+    	
+//    	callback:
+//    	prototypeAddress(address, port)
+//    	callbacks.html(   );
+    	
     });
-    
+
 
     disconnectButton.click(function() {
-    	var obj = { };    	
-    	socket.emit('disconnect', obj );    	
+    
+    	var localNet	=	nets[ Math.floor( Math.random() * nets.length ) ];
+
+    	var obj = { 
+    		localNet: { name: localNet.name },
+    	};    	
+    	
+    	
+    	
+    	socket.emit('Disconnect', obj, printLocalNets );    	
+        	
     });
 
     clearButton.click(function() {
     	var obj = { };    	
     	socket.emit(
-        		'clear'
-        		, obj
-        		, function(){
-    	});    	
+    		'clear'
+    		, obj
+    		, function(){
+    		}
+        );    	
     });
     
     
     
+    
+    
+    
+    
+    
+    
+
+    socket.on('showLocalNets', function (data) {
+    	printLocalNets(data);
+    });
  
     
     

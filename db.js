@@ -62,6 +62,42 @@ DB.prototype.find = function(coll_name, query, callback) {
 
 
 //save new message
+
+
+		
+DB.prototype.saveLocalNet = function(data, callback) {
+	this.getCollection("localNets",function(error, collection) {
+		
+		data.epoch = new Date();
+		data.active = true;
+		var localNet = data;
+		
+
+		
+		if( error ) callback(error)
+		else {    	     	  
+			var name = data.name;
+			var coords = data.location.coordinates;
+			
+			collection.update(
+			{	
+				name: name, 
+				"location:coordinates" : data.location.coordinates
+			},
+			
+			{	$set: localNet	},
+			
+			{	upsert: true, new: 1	});
+			
+			callback( null, collection );					
+			
+		}
+
+	});
+};
+
+
+//save new message
 DB.prototype.save = function(coll_name, coll_items, callback) {
     this.getCollection(coll_name,function(error, collection) {
       if( error ) callback(error)
@@ -72,8 +108,6 @@ DB.prototype.save = function(coll_name, coll_items, callback) {
     	  coll_item = coll_items[i];
     	  coll_item.created_at = new Date();
         }
-    	
-    	console.log("INSERTING");
     	
     	collection.insert(coll_items, function() {        	
           callback(null, collection);

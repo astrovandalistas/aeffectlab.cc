@@ -1,0 +1,13 @@
+
+
+body{
+	background-color:#ddd;
+	
+}
+
+#localNets li{
+	color:#888;
+}
+.active{
+	color:#000 !important;
+}

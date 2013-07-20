@@ -51,7 +51,9 @@ var handler = new Handler(io, Db);
 	
 handler.setup();
 	
-handler.localNets();
+handler.setupLocalNets();
+
+handler.setupFrontEnds();
 
     
     

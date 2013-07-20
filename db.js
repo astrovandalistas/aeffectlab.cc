@@ -20,13 +20,13 @@ DB.prototype.getCollection= function(coll_name,callback) {
 
 
 DB.prototype.printCollection= function(coll_name,callback) {
-	  this.db.collection(coll_name, function(error, collection) {
-	    if( error ) callback(error);
-	    else collection.count(function(err,cnt){
-	    	console.log(cnt);
-	    })
-	  });
-	};
+  this.db.collection(coll_name, function(error, collection) {
+    if( error ) callback(error);
+    else collection.count(function(err,cnt){
+    	console.log(cnt);
+    })
+  });
+};
 
 
 
@@ -71,25 +71,28 @@ DB.prototype.saveLocalNet = function(data, callback) {
 		data.epoch = new Date();
 		data.active = true;
 		var localNet = data;
-		
 
-		
 		if( error ) callback(error)
 		else {    	     	  
 			var name = data.name;
-			var coords = data.location.coordinates;
 			
+			var coords = data.location.coordinates;
 			collection.update(
 			{	
 				name: name, 
-				"location:coordinates" : data.location.coordinates
+				"location:coordinates" : coords
 			},
 			
-			{	$set: localNet	},
+			{	$set: localNet	},			
+			{	safe:true, upsert: true, new: 1	},
+			function(err,num){
+				if(!err)
+					callback( null, collection );
+				else callback(err)
+			});
+
 			
-			{	upsert: true, new: 1	});
-			
-			callback( null, collection );					
+					
 			
 		}
 
@@ -99,21 +102,21 @@ DB.prototype.saveLocalNet = function(data, callback) {
 
 //save new message
 DB.prototype.save = function(coll_name, coll_items, callback) {
-    this.getCollection(coll_name,function(error, collection) {
-      if( error ) callback(error)
-      else {    	     	  
-    	if( typeof(coll_items.length)=="undefined")
-          coll_items = [coll_items];    	    	
-    	for( var i =0;i< coll_items.length;i++ ) {
-    	  coll_item = coll_items[i];
-    	  coll_item.created_at = new Date();
-        }
-    	
-    	collection.insert(coll_items, function() {        	
-          callback(null, collection);
-        });
-      }
-    });
+	this.getCollection(coll_name,function(error, collection) {
+	  if( error ) callback(error)
+	  else {    	     	  
+		if( typeof(coll_items.length)=="undefined")
+	      coll_items = [coll_items];    	    	
+		for( var i =0;i< coll_items.length;i++ ) {
+		  coll_item = coll_items[i];
+		  coll_item.created_at = new Date();
+	    }
+		
+		collection.insert(coll_items, function() {        	
+	      callback(null, collection);
+	    });
+	  }
+	});
 };
 
 

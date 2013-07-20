@@ -1,14 +1,12 @@
 
 var messages = [
 	{
-		localNet: {
-			name:"Five42",
-			location: {
-				city:"Oakland",
-				state:"CA",
-				country:"USA",
-				coordinates:[37.8044, -122.2697]
-			},
+		name:"Five42",
+		location: {
+			city:"Oakland",
+			state:"CA",
+			country:"USA",
+			coordinates:[37.8044, -122.2697]
 		},
 		dateTime: "yyyy/mm/dd hh:mm:ss",
 		epoch: 1373260515,
@@ -16,39 +14,35 @@ var messages = [
 		messageText: "hello I'm a message",
 		hashTags: ["#aeLab"],
 		user: "thiago",
-		receiver:["twitter","sms","etc"],
+		receiver:"sms",
 		prototypes:["192.168.2.23:7878", "192.168.2.13:7878", "192.168.2.23:7777"]
 
 	},
 	{
-		localNet: {
-			name:"MOLAA",
-			location: {
-				city:"Long Beach",
-				state:"CA",
-				country:"USA",
-				coordinates:[33.7669, -118.1883]
-			},
-		},
+		name:"MOLAA",
+		location: {
+			city:"Long Beach",
+			state:"CA",
+			country:"USA",
+			coordinates:[33.7669, -118.1883]
+		},		
 		dateTime: "yyyy/mm/dd hh:mm:ss",
 		epoch: 1373220515,
 		messageId: 13,
 		messageText: "goodbye .",
 		hashTags: ["#aeLab"],
 		user: "furenku",
-		receiver:["twitter","sms","etc"],
+		receiver:"twitter",
 		prototypes:["192.168.2.23:7878", "192.168.2.13:7878", "192.168.2.23:7777"]
 	
 	},
 	{
-		localNet: {
-			name: "SESC",
-			location: {
-				city:"São Paulo",
-				state:"SP",
-				country:"Brazil",
-				coordinates:[-23.5000, -46.6167]
-			},
+		name: "SESC",
+		location: {
+			city:"São Paulo",
+			state:"SP",
+			country:"Brazil",
+			coordinates:[-23.5000, -46.6167]
 		},
 		dateTime: "yyyy/mm/dd hh:mm:ss",
 		epoch: 1373210515,
@@ -56,106 +50,87 @@ var messages = [
 		messageText: "brazil .",
 		hashTags: ["#aeLab"],
 		user: "brazil",
-		receiver:["brazil","sms","etc"],
+		receiver:"sms",
 		prototypes:["192.168.2.23:7878", "192.168.2.13:7878", "192.168.2.23:7777"]
 	
 	}
 ]
 
 
-var nets = [{name: "MOLAA",
+var nets = [
+{name: "MOLAA",
 location: {city:"Long Beach", state:"CA", country:"USA", coordinates:[33.7669, -118.1883]},
-description: "MOLAA blah blah blah",
-image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true,
 rcvrs: [{name:"sms"},
 {name:"twitter"},
 {name:"freenet"},
 {name:"http"}],
-_prots: [{name: "AST1",
-address: ["192.168.23.12",4555],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-     {name: "CAU1",
-     address: ["192.168.23.15",4555],
-     description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-{name: "ISO1",
-address: ["192.168.23.18",4555],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-{name: "VLE1",
-address: ["192.168.23.20",4555],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true}]
 },
+
 {name: "SESC",
 location: {city:"São Paulo", state:"SP", country:"Brazil", coordinates:[-23.5000, -46.6167]},
-description: "SP blah blah blah",
-image: "http://i.imgur.com/OV5JNjB.jpg",
 active: true,
 rcvrs: [{name:"sms"},
 {name:"twitter"},
 {name:"freenet"},
 {name:"http"}],
-_prots: [{name: "AST",
-address: ["192.168.2.2",4555],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-{name: "AST2",
-address: ["192.168.2.2",4444],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-{name: "ISO2",
-address: ["192.168.2.2",4599],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true}]
 },
+
 {name: "Five42",
 location: {city:"Oakland", state:"CA", country:"USA", coordinates:[37.8044, -122.2697]},
-description: "542 blah blah blah",
-image: "http://i.imgur.com/OV5JNjB.jpg",
 active: false,
 rcvrs: [{name:"sms"},
 {name:"twitter"},
 {name:"freenet"},
-{name:"http"}],
-_prots: [{name: "ProcessingTest",
-address: ["localhost",9000],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-{name: "AST3",
-address: ["192.168.2.2",4555],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-     {name: "CAU3",
-     address: ["192.168.2.20",4556],
-     description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-{name: "ISO3",
-address: ["192.168.2.30",4588],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true},
-{name: "VLE3",
-address: ["192.168.2.2",4556],
-description: "ohh lalalala",
-image: "http://i.imgur.com/OV5JNjB.jpg",
-active: true}]
-}];
+{name:"http"}]
+}
+
+];
 
 
-
+var prots= [
+	{	prototypeName: "AST",
+		prototypeAddress: ["192.168.2.2",4555],
+//		description: "ohh lalalala",
+//		image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true},		
+	{	prototypeName: "AST2",
+		prototypeAddress: ["192.168.2.2",4444],
+//		description: "ohh lalalala",
+//		image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true},
+	{	prototypeName: "ISO2",
+		prototypeAddress: ["192.168.2.2",4599],
+//		description: "ohh lalalala",
+//		image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true},	
+	{	prototypeName: "ProcessingTest",
+		prototypeAddress: ["localhost",9000],
+//		description: "ohh lalalala",
+//		image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true},
+	{	prototypeName: "AST3",
+		prototypeAddress: ["192.168.2.2",4555],
+//		description: "ohh lalalala",
+//		image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true},
+	{	prototypeName: "CAU3",
+		prototypeAddress: ["192.168.2.20",4556],
+//		description: "ohh lalalala",
+//		image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true},
+	{	prototypeName: "ISO3",
+		prototypeAddress: ["192.168.2.30",4588],
+		//description: "ohh lalalala",
+		//image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true},
+	{	prototypeName: "VLE3",
+		prototypeAddress: ["192.168.2.2",4556],
+//		description: "ohh lalalala",
+//		image: "http://i.imgur.com/OV5JNjB.jpg",
+		active: true
+	}
+];
 
 
 
@@ -224,7 +199,7 @@ $(document).ready(function(){
 	    			}
 
 	    			infoDiv.html( ul.html() );
-	    			messagesDiv.html("");
+	    			messagesDiv.html( "" );
 	    			
 	    			for ( i in data.messages )
 	    				messagesDiv.append( $('<li>').html( data.messages[i].messageText ) );
@@ -285,11 +260,11 @@ $(document).ready(function(){
     		'addMessage'
     		, obj
     		, function(array){
-    			
+
     			var ul = $('<ul>');
     			var li;
     			for( i in array ) {    				    				
-    				li = $('<li>').html(array[i].localNet.name + ": ").css('color','#aaa');
+    				li = $('<li>').html(array[i].name + ": ").css('color','#aaa');
     				ul.append(li);
 	    			li = $('<li>').html(array[i].messageText + ": ");
 	    			ul.append(li);
@@ -304,17 +279,22 @@ $(document).ready(function(){
     
     addProtButton.click(function() {
     	
-    	var localNet	=	nets[ Math.floor( Math.random() * nets.length ) ];
-    	
-    	var prots 		= 	nets[ Math.floor( Math.random() * nets.length ) ]._prots;
+    	var localNet	=	nets[ Math.floor( Math.random() * nets.length ) ];    	
     	var prot 		=	prots[ Math.floor( Math.random() * prots.length ) ];
+    	
     	var obj = {
-    		localNet: { name: localNet.name },
-    	 	prot: prot
+    		name: localNet.name,
+    		prototypeName: prot.prototypeName,
+    		prototypeAddress: prot.prototypeAddress,
     	};    	
     	
     	socket.emit('addPrototype', obj, callback);  
     	
+    	var response  = {
+    		prototypeAddress: prot.prototypeAddress,
+    	}
+    	
+    	fn( response );
 //    	callback:
 //    	prototypeAddress(address, port)
 //    	callbacks.html(   );
@@ -324,18 +304,24 @@ $(document).ready(function(){
     
     removeProtButton.click(function() {
     	
-    	var localNet	=	nets[ Math.floor( Math.random() * nets.length ) ];
-    	
-    	var prots 		= 	nets[ Math.floor( Math.random() * nets.length ) ]._prots;
+    	var localNet	=	nets[ Math.floor( Math.random() * nets.length ) ];    	
     	var prot 		=	prots[ Math.floor( Math.random() * prots.length ) ];
+    	
     	var obj = {
-    		localNet: { name: localNet.name },
-    	 	prot: prot
+    		name: localNet.name,
+    		prototypeName: prot.prototypeName,
+    		prototypeAddress: prot.prototypeAddress,
     	};    	
     	
     	socket.emit('removePrototype', obj, callback);  
+    	    	
+    	var response  = {
+    		prototypeAddress: prot.prototypeAddress,
+    	}
     	
-//    	callback:
+    	fn( response );
+    	
+v//    	callback:
 //    	prototypeAddress(address, port)
 //    	callbacks.html(   );
     	
@@ -361,8 +347,7 @@ $(document).ready(function(){
     	socket.emit(
     		'clear'
     		, obj
-    		, function(){
-    		}
+    		, printLocalNets
         );    	
     });
     
@@ -377,6 +362,7 @@ $(document).ready(function(){
 
     socket.on('showLocalNets', function (data) {
     	printLocalNets(data);
+//    	alert( JSON.stringify(data));
     });
  
     
